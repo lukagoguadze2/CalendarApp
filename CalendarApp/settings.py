@@ -54,7 +54,10 @@ INSTALLED_APPS = [
 
     # Local apps
     'user.apps.UserConfig',
-    'frontend.apps.FrontendConfig'
+    'frontend.apps.FrontendConfig',
+    'universities.apps.UniversitiesConfig',
+    'schedules.apps.SchedulesConfig',
+    'materials.apps.MaterialsConfig'
 ]
 
 MIDDLEWARE = [
