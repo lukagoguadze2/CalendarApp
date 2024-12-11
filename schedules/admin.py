@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import EveryHourSchedule
 
-# Register your models here.
+
+@admin.register(EveryHourSchedule)
+class EveryHourScheduleAdmin(admin.ModelAdmin):
+    pass
