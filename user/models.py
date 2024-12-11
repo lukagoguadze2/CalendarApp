@@ -40,6 +40,10 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     rating = models.IntegerField(default=0)
     last_activity = models.DateTimeField(auto_now=True)
+    university = models.ForeignKey('universities.University', on_delete=models.SET_NULL, null=True, blank=True)
+    faculty = models.ForeignKey('universities.Faculty', on_delete=models.SET_NULL, null=True, blank=True)
+    year_of_study = models.PositiveIntegerField(null=True, blank=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -54,4 +58,37 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.email
+        return f"{self.id}: {self.username} - {self.email}"
+
+    def __repr__(self):
+        return f"User({self.id}: {self.email})"
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=50)  # Group name (e.g., Group A, Group B)
+    course = models.ForeignKey('universities.Course', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name} - {self.course.name}"
+
+    def __repr__(self):
+        return f"Group({self.name} - {self.course.name})"
+
+
+# A user can belong to many groups (many-to-many relationship)
+class UserGroup(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    is_group_leader = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('user', 'group')
+
+    def __str__(self):
+        if self.is_group_leader:
+            return f"{self.user.username} - Leader of Group {self.group.name}"
+
+        return f"{self.user.username} - {self.group.name}"
+
+    def __repr__(self):
+        return f"UserGroup({self.user.username} - {self.group.name})"
