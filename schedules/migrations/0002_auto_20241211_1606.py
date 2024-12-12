@@ -24,7 +24,7 @@ def create_schedules(apps, schema_editor):
 
 
 def delete_schedules(apps, schema_editor):
-    EveryHourSchedule.objects.all().delete()
+    EveryHourSchedule.objects.filter(is_custom=False).delete()
 
 
 class Migration(migrations.Migration):
