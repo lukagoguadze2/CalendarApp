@@ -26,6 +26,7 @@ urlpatterns = [
 ]
 
 handler404 = TemplateView.as_view(template_name='404.html')
+handler500 = TemplateView.as_view(template_name='500.html')
 
 if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
