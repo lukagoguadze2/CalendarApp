@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import timedelta, time
+from datetime import time
 
 
 class EveryHourSchedule(models.Model):
@@ -36,3 +36,14 @@ class EveryHourSchedule(models.Model):
 
     def __str__(self):
         return f"{self.get_week_day_display()} from {self.start_time} to {self.end_time}"
+
+
+class CourseSchedule(models.Model):
+    schedule = models.ForeignKey(EveryHourSchedule, on_delete=models.CASCADE)
+    group = models.ForeignKey('user.Group', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('schedule', 'group')
+
+    def __str__(self):
+        return f"{self.group.course} on {self.schedule} for Group {self.group}"
