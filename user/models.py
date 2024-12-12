@@ -37,15 +37,15 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    identifier = models.CharField(max_length=50, unique=True)
     email = models.EmailField(unique=True)
-    rating = models.IntegerField(default=0)
     last_activity = models.DateTimeField(auto_now=True)
     university = models.ForeignKey('universities.University', on_delete=models.SET_NULL, null=True, blank=True)
     faculty = models.ForeignKey('universities.Faculty', on_delete=models.SET_NULL, null=True, blank=True)
     year_of_study = models.PositiveIntegerField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = UserManager()
 
@@ -58,7 +58,7 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.id}: {self.username} - {self.email}"
+        return f"{self.id}: {self.first_name} {self.last_name}"
 
     def __repr__(self):
         return f"User({self.id}: {self.email})"
@@ -67,6 +67,7 @@ class User(AbstractUser):
 class Group(models.Model):
     name = models.CharField(max_length=50)  # Group name (e.g., Group A, Group B)
     course = models.ForeignKey('universities.Course', on_delete=models.CASCADE)
+    group_type = models.CharField(max_length=50)
 
     def __str__(self):
         return f"{self.name} - {self.course.name}"
