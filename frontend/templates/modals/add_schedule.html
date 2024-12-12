@@ -1,0 +1,44 @@
+<div class="modal fade" id="date-event" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="popup text-left">
+                    <h4 class="mb-3">Add Schedule</h4>
+                    <form action="/" id="submit-schedule">
+                        <div class="content create-workform row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="schedule-title">Schedule For</label>
+                                    <input class="form-control" placeholder="Enter Title" type="text" name="title" id="schedule-title" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="schedule-start-date">Start Date</label>
+                                    <input class="form-control basicFlatpickr date-input" placeholder="2020-06-20" type="text" name="title" id="schedule-start-date" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="schedule-end-date">End Date</label>
+                                    <input class="form-control basicFlatpickr date-input" placeholder="2020-06-20" type="text" name="title" id="schedule-end-date" required />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input class="form-control" type="color" name="title" id="schedule-color" required />
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <div class="d-flex flex-wrap align-items-ceter justify-content-center">
+                                    <button class="btn btn-primary mr-4" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-outline-primary" type="submit">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

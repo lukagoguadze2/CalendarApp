@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>{% block title %}{% endblock %}</title>
+
+    {% include 'imports/stylesheets.html' %}
+
+    {# block for additional stylesheets #}
+    {% block stylesheets %}
+
+    {% endblock %}
+  </head>
+  <body class="fixed-top-navbar top-nav  ">
+    {% include 'partials/loader.html' %}
+
+    <div class="wrapper">
+        {% include 'partials/header.html' %}
+        <div class="content-page">
+        {# block for html content #}
+        {% block content %}
+
+        {% endblock %}
+        </div>
+    </div>
+    {% include 'partials/footer.html' %}
+
+    {% include 'imports/scripts.html' %}
+
+    {# block for additional scripts #}
+    {% block scripts %}
+
+    {% endblock %}
+  </body>
+</html>
