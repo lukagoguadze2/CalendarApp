@@ -19,6 +19,12 @@ class Faculty(models.Model):
 
 
 class Course(models.Model):
+    degree_level_choice = [
+        ('B', 'Bachelor'),
+        ('M', 'Master'),
+        ('D', 'Doctorate'),
+    ]
+
     name = models.CharField(max_length=255)
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
     semester = models.PositiveIntegerField(
@@ -27,11 +33,7 @@ class Course(models.Model):
     )
     degree_level = models.CharField(
         max_length=50,
-        choices=[
-            ('B', 'Bachelor'),
-            ('M', 'Master'),
-            ('D', 'Doctorate'),
-        ]
+        choices=degree_level_choice
     )
     duration_in_weeks = models.PositiveIntegerField()
 
