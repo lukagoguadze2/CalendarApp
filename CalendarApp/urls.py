@@ -22,7 +22,11 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('rest_framework.urls')),
+    path('rest_framework/', include('rest_framework.urls')),
+    path('api/', include('universities.urls', namespace='universities')),
+    path('api/schedules/', include('schedules.urls', namespace='schedules')),
+    path('api/', include('user.urls', namespace='user')),
+    path('', include('frontend.urls', namespace='frontend')),
 ]
 
 handler404 = TemplateView.as_view(template_name='404.html')

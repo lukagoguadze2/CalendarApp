@@ -8,6 +8,21 @@ class FacultySerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+class CourseSerializer(serializers.ModelSerializer):
+    faculty = FacultySerializer()
+    degree_level_display = serializers.CharField(source='get_degree_level_display')
+
+    class Meta:
+        model = Course
+        fields = (
+            'id', 'name', 'faculty',
+            'semester',
+            'degree_level_display',
+            'degree_level',
+            'duration_in_weeks'
+        )
+
+
 class GetFacultiesSerializer(serializers.Serializer):
     university_id = serializers.IntegerField()
     level_of_study = serializers.CharField()

@@ -1,8 +1,6 @@
-from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 
 from django import forms
-from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django_select2.forms import Select2Widget
