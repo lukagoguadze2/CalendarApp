@@ -1,0 +1,50 @@
+{% load static %}
+<script src="{% static 'js/select2.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize Select2 for university and faculty fields
+        setTimeout(() => {
+            $('#{{ form.university.id_for_label }}').select2();
+            $('#{{ form.faculty.id_for_label }}').select2();
+            $('#{{ form.level_of_study.id_for_label }}').select2();
+        }, 10);
+        $('#{{ form.university.id_for_label }}').trigger('change');
+
+        // AJAX request to get faculties based on university
+        $('#{{ form.university.id_for_label }}, #{{ form.level_of_study.id_for_label }}').off('change').change(function() {
+            let facultyDropdown = $('#{{ form.faculty.id_for_label }}');
+            let universityId = $('#{{ form.university.id_for_label }}').val();
+            if (universityId) {
+                $.ajax({
+                    url: '{% url "universities:load-faculties" %}',
+                    data: {
+                        'university_id': universityId,
+                        'level_of_study': $('#{{ form.level_of_study.id_for_label }}').val()
+                    },
+                    success: function(data) {
+                        $('#{{ form.faculty.id_for_label }}').empty();
+                        $.each(data, function(index, faculty) {
+                            facultyDropdown.append(new Option(faculty.name, faculty.id, false, false));
+                        });
+                        $('#{{ form.faculty.id_for_label }}').trigger('change');
+                    }
+                });
+            } else {
+                $('#{{ form.faculty.id_for_label }}').empty();
+            }
+        });
+        
+        $('#id_year_of_study').on('input', function() {
+            let value = parseInt($(this).val(), 10);
+
+            // If the value is NaN (not a number), clear the input
+            if (isNaN(value)) {
+                $(this).val('');
+            } else if (value < 1) {
+                $(this).val(1); // Set to minimum if below range
+            } else if (value > 5) {
+                $(this).val(5); // Set to maximum if above range
+            }
+        });
+    });
+</script>

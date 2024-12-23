@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+ <div class="container h-100">
+    <div class="row justify-content-center align-items-center height-self-center">
+       <div class="col-md-5 col-sm-12 col-12 align-self-center">
+          <div class="card">
+             <div class="card-body text-center">
+                <h2>Sign Up</h2>
+                <p>Create your {{ WEBSITE_NAME }} account.</p>
+                <form method="POST">
+                   {% csrf_token %}
+                   <div class="row">
+                      <div class="col-lg-12">
+                        {% if form.email.errors %}
+                        <div class="text-danger">
+                            {{ form.email.errors|join:" " }}
+                        </div>
+                        {% endif %}
+                        <div class="floating-input form-group">
+                            <input class="form-control {% if form.email.errors %}is-invalid{% endif %}" type="text" name="email" id="email" required>
+                            <label class="form-label" for="email">Email</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        {% if form.first_name.errors %}
+                        <div class="text-danger">
+                            {{ form.first_name.errors|join:" " }}
+                        </div>
+                        {% endif %}
+                        <div class="floating-input form-group">
+                            <input class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" type="text" name="first_name" id="id_first_name" required>
+                            <label class="form-label" for="id_first_name">Full Name</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        {% if form.last_name.errors %}
+                        <div class="text-danger">
+                            {{ form.last_name.errors|join:" " }}
+                        </div>
+                        {% endif %}
+                        <div class="floating-input form-group">
+                            <input class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" type="text" name="last_name" id="id_last_name" required>
+                            <label class="form-label" for="id_last_name">Last Name</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                        {% if form.identifier.errors %}
+                        <div class="text-danger">
+                            {{ form.identifier.errors|join:" " }}
+                        </div>
+                        {% endif %}
+                        <div class="floating-input form-group">
+                            <input class="form-control {% if form.identifier.errors %}is-invalid{% endif %}" type="text" name="identifier" id="id_identifier" required>
+                            <label class="form-label" for="id_identifier">Identification Number</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        {% if form.password1.errors %}
+                        <div class="text-danger">
+                            {{ form.password1.errors|join:" " }}
+                        </div>
+                        {% endif %}
+                        <div class="floating-input form-group">
+                            <input class="form-control {% if form.password1.errors %}is-invalid{% endif %}" type="password" name="password1" id="id_password1" required>
+                            <label class="form-label" for="id_password1">Password</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                         <div class="floating-input form-group">
+                            <input class="form-control {% if form.password2.errors %}is-invalid{% endif %}" type="password" name="password2" id="id_password2" required>
+                            <label class="form-label" for="id_password2">Confirm Password</label>
+                         </div>
+                      </div>
+                      {% if form.password2.errors %}
+                      <div class="col-lg-12 pb-3">
+                          <div class="text-danger">
+                            {{ form.password2.errors|join:" " }}
+                          </div>
+                      </div>
+                      {% endif %}
+                   </div>
+                   <div class="text-danger">
+                      {% for error in form.non_field_errors %}
+                         <div>{{ error }}</div>
+                      {% endfor %}
+                   </div>
+                   <button type="submit" class="btn btn-primary">Sign Up</button>
+                   <p class="mt-3">
+                      Already have an Account <a href="{% url 'frontend:authentication:login' %}" class="text-primary">Sign In</a>
+                   </p>
+                </form>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+{% endblock %}

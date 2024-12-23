@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-lg-12">
+    {% if form.university.errors %}
+    <div class="text-danger">
+        {{ form.university.errors|join:" " }}
+    </div>
+    {% endif %}
+    <div class="floating-input form-group">
+        {{ form.university.label_tag }}
+        {{ form.university }}
+    </div>
+  </div>
+  <div class="col-lg-12">
+    {% if form.level_of_study.errors %}
+    <div class="text-danger">
+        {{ form.level_of_study.errors|join:" " }}
+    </div>
+    {% endif %}
+    <div class="floating-input form-group">
+        {{ form.level_of_study.label_tag }}
+        {{ form.level_of_study }}
+    </div>
+  </div>
+  <div class="col-lg-12">
+    {% if form.faculty.errors %}
+    <div class="text-danger">
+        {{ form.faculty.errors|join:" " }}
+    </div>
+    {% endif %}
+    <div class="floating-input form-group">
+        {{ form.faculty.label_tag }}
+        {{ form.faculty }}
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <div class="floating-input form-group">
+        {{ form.year_of_study.label_tag }}
+        {{ form.year_of_study }}
+    </div>
+  </div>
+  <div class="col-lg-12">
+      {% if form.is_private.errors %}
+    <div class="text-danger">
+        {{ form.is_private.errors|join:" " }}
+    </div>
+    {% endif %}
+    <div class="floating-input form-group">
+        {{ form.is_private.label_tag }}
+        {{ form.is_private }}
+    </div>
+  </div>
+</div>

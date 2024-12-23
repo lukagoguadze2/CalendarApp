@@ -1,0 +1,93 @@
+{% load static %}
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <ul class="navbar-nav ml-auto navbar-list align-items-center">
+      <li class="nav-item nav-icon dropdown">
+          <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="las la-bell"></i>
+              <span class="badge badge-primary count-mail rounded-circle">{{ notification_count }}</span>
+              <span class="bg-primary"></span>
+          </a>
+          <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <div class="card shadow-none m-0">
+                  <div class="card-body p-0 ">
+                      <div class="cust-title p-3">
+                          <h5 class="mb-0">Notifications</h5>
+                      </div>
+                      <div class="p-2">
+                      {% if notifications %}
+                      {% for notification in notifications %}
+                          {% if forloop.counter < 3 %}
+                          <a href="#" class="iq-sub-card">
+                              <div class="media align-items-center cust-card p-2">
+                                  <div class="media-body ml-3">
+                                      <div class="d-flex align-items-center justify-content-between">
+                                          <h6 class="mb-0">{{ notification.user }}</h6>
+                                          <small class="mb-0">{{ notification.datetime }}</small>
+                                      </div>
+                                      <small class="mb-0">{{ notification.small_description }}</small>
+                                  </div>
+                              </div>
+                          </a>
+                          {% endif %}
+                      {% endfor %}
+                      {% else %}
+                        <div class="iq-sub-card" style="cursor: default;">
+                            <div class="media align-items-center cust-card p-2">
+                                <div class="media-body
+                                ml-3">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="mb-0">No Notifications</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      {% endif %}
+                      </div>
+                      <a class="right-ic btn-block position-relative p-3 border-top text-center" href="{% url 'frontend:notifications' %}" role="button">
+                          See All Notification
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </li>
+      <li class="caption-content">
+          <a href="#" class="search-toggle dropdown-toggle d-flex align-items-center" id="dropdownMenuButton3" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <img src="{% static 'images/01.jpg' %}" class="avatar-40 img-fluid rounded" alt="user">
+              <div class="caption ml-3">
+                  <h6 class="mb-0 line-height">{{ request.user }}<i class="las la-angle-down ml-3"></i></h6>
+              </div>
+          </a>
+          <div class="iq-sub-dropdown dropdown-menu user-dropdown" aria-labelledby="dropdownMenuButton3">
+              <div class="card m-0">
+                  <div class="card-body p-0">
+                      <div class="py-3">
+                          <a href="{% url 'frontend:profile-redirect' %}" class="iq-sub-card">
+                              <div class="media align-items-center">
+                                  <i class="ri-user-line mr-3"></i>
+                                  <h6>View Profile</h6>
+                              </div>
+                          </a>
+                          <a href="{% url 'frontend:profile:settings' %}" class="iq-sub-card">
+                              <div class="media align-items-center">
+                                  <i class="ri-settings-2-line mr-3"></i>
+                                  <h6>Account Settings</h6>
+                              </div>
+                          </a>
+                      </div>
+                      {% if request.user.is_authenticated %}
+                      <a class="right-ic p-3 border-top btn-block position-relative text-center" href="{% url 'frontend:authentication:logout' %}" role="button">
+                           Logout
+                      </a>
+                      {% else %}
+                      <a class="right-ic p-3 border-top btn-block position-relative text-center" href="{% url 'frontend:authentication:login' %}" role="button">
+                           Login
+                      </a>
+                      {% endif %}
+                  </div>
+              </div>
+          </div>
+      </li>
+  </ul>
+</div>

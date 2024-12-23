@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+        <div class="col-md-8 offset-md-2">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h2 class="text-white">Edit Profile</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" id="email" class="form-control" value="{{ user.email }}" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="identifier" class="form-label">Identifier:</label>
+                                <input type="text" id="identifier" class="form-control" value="{{ user.identifier }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="floating-input form-group">
+                                    {{ form.first_name.label_tag }}
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="floating-input form-group">
+                                    {{ form.last_name.label_tag }}
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 mb-2">
+                                <label for="phone_number_iti" class="form-label">Phone Number</label>
+                                <input
+                                  type="tel"
+                                  id="phone_number_iti"
+                                  class="form-control"
+                                  placeholder="Enter your phone number"
+                                  required
+                                />
+                                <div class="invalid-feedback">Please enter a valid phone number.</div>
+                              </div>
+                              <input type="hidden" name="phone_number" id="phone_number" value="{{ user.phone_number }}">
+                            <div class="col-lg-6">
+                                <button type="button" class="btn btn-danger mt-1" id="remove_phone_number">Remove Phone Number</button>
+                            </div>
+                        </div>
+
+                        {% include 'authentication/partials/university_faculty.html' %}
+
+                        <!-- Fully Registered -->
+                        <div>
+                            <strong>Registration Status:</strong>
+                            <span class="badge bg-info">Fully Registered</span>
+                        </div>
+                    </div>
+                    <div class="text-danger">
+                      {% for error in form.non_field_errors %}
+                         <div>{{ error }}</div>
+                      {% endfor %}
+                   </div>
+                    <div class="text-right p-2">
+                        <a href="{% url 'frontend:authentication:password-reset' %}">Reset Password</a>
+                    </div><div class="card-footer text-center bg-light">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="{% url 'frontend:profile-redirect' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+{% include 'authentication/partials/select2-scripts.html' %}
+<script src="{% static 'js/intlTelInput.min.js' %}"></script>
+<script src="{% static 'js/api/buttons.js' %}"></script>
+<script>
+$(document).ready(function() {
+    document.querySelector("#remove_phone_number").addEventListener("click", function() {
+        if (document.querySelector("#phone_number").value === 'None') {
+            alert("You do not have a phone number to remove.");
+            return;
+        }
+
+        SendRemovePhoneNumberRequest('{% url 'user:remove_phone_number' %}', document.querySelector('[name=csrfmiddlewaretoken]').value)
+            .then(success => {
+                if (success) {
+                    window.location.reload();
+                } else {
+                    alert("An error occurred while removing your phone number.");
+                }
+            });
+    });
+
+    var phoneInput = document.querySelector("#phone_number_iti");
+    var iti = intlTelInput(phoneInput, {
+      initialCountry: "{{ phone_country_code.region|default:'' }}",
+      utilsScript: "{% static 'js/utils.js' %}",
+    });
+
+    {% if user.phone_number %}
+    iti.setNumber('{{ user.phone_number }}');
+    {% endif %}
+
+    document.querySelector("form").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (iti.isValidNumber()) {
+        phoneInput.classList.remove("is-invalid");
+        $('#phone_number').val(iti.getNumber());
+        this.submit();
+      } else {
+        phoneInput.classList.add("is-invalid");
+        phoneInput.focus();
+      }
+    });
+
+    phoneInput.addEventListener("input", () => {
+      phoneInput.classList.remove("is-invalid");
+      $('#phone_number').val(iti.getNumber());
+    });
+});
+</script>
+{% endblock scripts %}
