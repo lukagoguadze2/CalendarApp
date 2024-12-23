@@ -40,6 +40,7 @@ APPEND_SLASH = True
 AUTH_USER_MODEL = "user.User"
 
 WEBSITE_NAME = "Calendify"
+PASSWORD_RESET_SESSION_TIMEOUT = 60 * 30  # 30 minutes
 
 # Application definition
 
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
+    'django_select2',
 
     # Local apps
     'user.apps.UserConfig',
@@ -70,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'frontend.middleware.RegistrationMiddleware',
 ]
 
 if DEBUG:
@@ -106,12 +109,8 @@ WSGI_APPLICATION = 'CalendarApp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -152,8 +151,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_DIRS = [
-    BASE_DIR / 'frontend',
+    BASE_DIR / 'frontend/static',
 ]
 
 # Default primary key field type
@@ -167,12 +168,25 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
             'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ),
-    "DEFAULT_RENDERER_CLASSES": (
-        'rest_framework.renderers.JSONRenderer',
-    ),
+    # "DEFAULT_RENDERER_CLASSES": (
+    #     'rest_framework.renderers.JSONRenderer',
+    # ),
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
+# Celery configuration
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+CELERY_TIMEZONE = "Asia/Tbilisi"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 INTERNAL_IPS = [
     "127.0.0.1",
